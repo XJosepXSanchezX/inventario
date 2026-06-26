@@ -217,7 +217,11 @@
   .role-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block}
   .role-admin{background:rgba(61,214,208,.13);color:var(--teal)}
   .role-warehouse{background:rgba(255,177,60,.13);color:var(--amber)}
+  .role-staff{background:rgba(74,222,128,.13);color:var(--green)}
   .role-read{background:rgba(136,147,168,.13);color:var(--muted)}
+  .role-select{width:100%;background:var(--ink);border:1px solid var(--border);border-radius:9px;
+    padding:9px 11px;color:var(--text);font-size:13.5px;font-weight:600}
+  .role-select:focus{outline:none;border-color:var(--teal)}
   .user-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-top:14px;padding-top:14px;border-top:1px solid var(--border-soft)}
   .section-title{font-size:13px;color:var(--muted);font-weight:600;margin:0 0 14px;text-transform:uppercase;letter-spacing:.06em}
 
@@ -559,10 +563,12 @@ async function loadProfile(){
   const nm = profile.full_name || me.email;
   $('me-name').textContent = nm; $('me-role').textContent = roleLabel(profile.role); $('me-avatar').textContent = initials(nm);
 }
-function roleLabel(r){ return {admin:'Administrador', warehouse:'Almacén', read:'Solo lectura'}[r]||r; }
+function roleLabel(r){ return {admin:'Administrador', warehouse:'Almacén', staff:'Empleado', read:'Solo lectura'}[r]||r; }
 function initials(n){ return (n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
-function canWrite(){ return profile && (profile.role==='admin'||profile.role==='warehouse'); }
-function applyRoleUI(){ $('primary-action').style.display = canWrite()?'inline-flex':'none'; }
+function isAdmin(){ return profile && profile.role==='admin'; }
+function canEditProducts(){ return profile && (profile.role==='admin'||profile.role==='warehouse'); }
+function canMove(){ return profile && (profile.role==='admin'||profile.role==='warehouse'||profile.role==='staff'); }
+function applyRoleUI(){ $('primary-action').style.display = canEditProducts()?'inline-flex':'none'; }
 
 async function refreshData(){
   const [p,s,m,pr] = await Promise.all([
@@ -641,7 +647,7 @@ function renderProducts(){
   let list=products.slice();
   if(locFilter!=='all') list=list.filter(p=>qtyAt(p,locFilter)>0);
   if(searchTerm) list=list.filter(p=>(p.name+' '+(p.sku||'')+' '+(p.barcode||'')).toLowerCase().includes(searchTerm));
-  const w=canWrite();
+  const ce=canEditProducts(), cm=canMove();
   $('prod-cards').innerHTML = list.length? list.map(p=>{
     const t=total(p), s=statusOf(t,p.min_stock);
     const badges=Object.keys(LOCATIONS).map(l=>{const q=qtyAt(p,l);return `<span class="locb${q===0?' zero':''}${locFilter===l?' hi':''}"><i>${LOCATIONS[l].label}</i><b>${q}</b></span>`}).join('');
@@ -652,13 +658,13 @@ function renderProducts(){
       <div class="pcard-total"><span class="big-num">${t}</span><span class="unit">ud. totales</span><span class="mininfo">mín ${p.min_stock}</span></div>
       ${gaugeBar(t,p.min_stock)}
       <div class="loc-badges">${badges}</div>
-      ${w?`<div class="pcard-actions">
-        <button class="btn btn-ghost" onclick="openMove('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>Movimiento</button>
-        <button class="icon-btn" onclick="openProduct('${p.id}')" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
-        <button class="icon-btn del" onclick="delProduct('${p.id}','${esc(p.name).replace(/'/g,"\\'")}')" title="Eliminar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+      ${(ce||cm)?`<div class="pcard-actions">
+        ${cm?`<button class="btn btn-ghost" onclick="openMove('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>Movimiento</button>`:''}
+        ${ce?`<button class="icon-btn" onclick="openProduct('${p.id}')" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+        <button class="icon-btn del" onclick="delProduct('${p.id}','${esc(p.name).replace(/'/g,"\\'")}')" title="Eliminar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>`:''}
       </div>`:''}
     </div>`}).join('')
-    : `<div class="empty" style="grid-column:1/-1"><h4>Sin resultados</h4><p>${searchTerm?'Nada coincide con la búsqueda.':(w?'Pulsa “Nuevo producto” para empezar.':'No hay productos.')}</p></div>`;
+    : `<div class="empty" style="grid-column:1/-1"><h4>Sin resultados</h4><p>${searchTerm?'Nada coincide con la búsqueda.':(ce?'Pulsa “Nuevo producto” para empezar.':'No hay productos.')}</p></div>`;
 }
 
 // ---------- MOVIMIENTOS ----------
@@ -678,13 +684,21 @@ function renderMovements(){
 // ---------- USUARIOS ----------
 function renderUsers(){
   $('users-count').textContent=`Equipo · ${profiles.length} usuario${profiles.length===1?'':'s'}`;
-  const cls={admin:'role-admin',warehouse:'role-warehouse',read:'role-read'};
-  const colr={admin:'var(--teal),var(--teal-dim)',warehouse:'#FFB13C,#b8791f',read:'#8893A8,#5A6478'};
+  const cls={admin:'role-admin',warehouse:'role-warehouse',staff:'role-staff',read:'role-read'};
+  const colr={admin:'var(--teal),var(--teal-dim)',warehouse:'#FFB13C,#b8791f',staff:'#4ADE80,#2f9e57',read:'#8893A8,#5A6478'};
+  const roleOpts=u=>['admin','warehouse','staff','read'].map(r=>`<option value="${r}" ${u.role===r?'selected':''}>${roleLabel(r)}</option>`).join('');
   $('user-cards').innerHTML = profiles.map(u=>`<div class="user-card">
     <div class="top"><div class="avatar" style="background:linear-gradient(135deg,${colr[u.role]||colr.read})">${initials(u.full_name||'?')}</div>
     <div><div class="uname">${esc(u.full_name||'Sin nombre')}</div></div></div>
-    <span class="role-tag ${cls[u.role]||'role-read'}">${roleLabel(u.role)}</span>
+    ${(isAdmin() && u.id!==me.id)
+      ? `<select class="role-select" onchange="changeRole('${u.id}',this.value)">${roleOpts(u)}</select>`
+      : `<span class="role-tag ${cls[u.role]||'role-read'}">${roleLabel(u.role)}${u.id===me.id?' (tú)':''}</span>`}
     <div class="user-meta"><span>Últ. acceso: ${u.last_seen?timeAgo(u.last_seen):'—'}</span></div></div>`).join('') || `<div class="empty"><p>Sin usuarios.</p></div>`;
+}
+async function changeRole(id, role){
+  const { error } = await sb.from('profiles').update({ role }).eq('id', id);
+  if(error) return toast(error.message,'err');
+  toast('Rol actualizado.','ok'); await refreshData();
 }
 
 // ---------- MODAL PRODUCTO ----------
@@ -693,7 +707,7 @@ function fillProductForm(){
   $('p-locqty').innerHTML=Object.keys(LOCATIONS).map(l=>`<div class="field"><label>${LOCATIONS[l].label}</label><input id="pq-${l}" type="number" min="0" value="0"></div>`).join('');
 }
 function openProduct(id){
-  if(!canWrite()) return toast('No tienes permisos de edición.','err');
+  if(!canEditProducts()) return toast('No tienes permisos de edición.','err');
   editingId=id||null;
   const p = id? products.find(x=>x.id===id) : {name:'',sku:'',barcode:'',category:'consumibles',supplier:'',min_stock:0};
   $('pm-title').textContent = id?'Editar producto':'Nuevo producto';
@@ -719,7 +733,7 @@ async function saveProduct(){
   finally{ $('pm-save').disabled=false; }
 }
 async function delProduct(id,name){
-  if(!canWrite()) return toast('No tienes permisos.','err');
+  if(!canEditProducts()) return toast('No tienes permisos.','err');
   if(!confirm(`¿Eliminar “${name}”? Se borrará su stock e historial en todas las ubicaciones.`)) return;
   const { error } = await sb.from('products').delete().eq('id',id);
   if(error) return toast(error.message,'err');
@@ -728,7 +742,7 @@ async function delProduct(id,name){
 
 // ---------- MODAL MOVIMIENTO ----------
 function openMove(productId){
-  if(!canWrite()) return toast('No tienes permisos para registrar movimientos.','err');
+  if(!canMove()) return toast('No tienes permisos para registrar movimientos.','err');
   moveType='in'; setMoveType('in');
   $('m-product').innerHTML=products.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
   $('m-location').innerHTML=Object.keys(LOCATIONS).map(l=>`<option value="${l}">${LOCATIONS[l].label}</option>`).join('');
@@ -773,7 +787,7 @@ function resetScanBtn(){ $('scan-viewport').style.display='block'; $('reader').s
 function onScan(code){
   $('scan-code').textContent=code;
   const p=products.find(x=>x.barcode===code||x.sku===code);
-  if(!p){ $('scan-result').innerHTML=`<div class="empty"><h4>No encontrado</h4><p>Ningún producto con el código <span class="mono">${esc(code)}</span>.</p>${canWrite()?'<button class="btn btn-teal" style="margin-top:14px" onclick="openProduct(null)">Crear producto</button>':''}</div>`; return; }
+  if(!p){ $('scan-result').innerHTML=`<div class="empty"><h4>No encontrado</h4><p>Ningún producto con el código <span class="mono">${esc(code)}</span>.</p>${canEditProducts()?'<button class="btn btn-teal" style="margin-top:14px" onclick="openProduct(null)">Crear producto</button>':''}</div>`; return; }
   if(navigator.vibrate) navigator.vibrate(60);
   const t=total(p), s=statusOf(t,p.min_stock);
   const badges=Object.keys(LOCATIONS).map(l=>{const q=qtyAt(p,l);return `<span class="locb${q===0?' zero':''}"><i>${LOCATIONS[l].label}</i><b>${q}</b></span>`}).join('');
@@ -783,7 +797,7 @@ function onScan(code){
     <span class="pill ${s.cls}">${s.label}</span></div>
     <div class="pcard-total"><span class="big-num">${t}</span><span class="unit">ud. totales</span><span class="mininfo">mín ${p.min_stock}</span></div>
     <div class="loc-badges">${badges}</div>
-    ${canWrite()?`<div class="pcard-actions"><button class="btn btn-teal" style="flex:1" onclick="openMove('${p.id}')">Registrar movimiento</button></div>`:''}</div>`;
+    ${canMove()?`<div class="pcard-actions"><button class="btn btn-teal" style="flex:1" onclick="openMove('${p.id}')">Registrar movimiento</button></div>`:''}</div>`;
 }
 
 // ---------- NAV ----------
@@ -797,9 +811,9 @@ function go(view,el){
   el.classList.add('active');
   $('page-title').textContent=titles[view];
   $('topsearch').style.display = (view==='productos')?'flex':'none';
-  const w=canWrite(), btn=$('primary-action');
-  if(view==='productos'||view==='panel'){ btn.style.display=w?'inline-flex':'none'; btn.querySelector('span').textContent='Nuevo producto'; }
-  else if(view==='movimientos'){ btn.style.display=w?'inline-flex':'none'; btn.querySelector('span').textContent='Registrar'; }
+  const btn=$('primary-action');
+  if(view==='productos'||view==='panel'){ btn.style.display=canEditProducts()?'inline-flex':'none'; btn.querySelector('span').textContent='Nuevo producto'; }
+  else if(view==='movimientos'){ btn.style.display=canMove()?'inline-flex':'none'; btn.querySelector('span').textContent='Registrar'; }
   else btn.style.display='none';
 }
 function primaryAction(){ if(curView==='movimientos') openMove(null); else openProduct(null); }
