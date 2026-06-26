@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0E14">
 <title>Stockaje · Gestión de inventario</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +16,7 @@
     --border:#272F40;--border-soft:#1E2533;--text:#E8ECF4;--muted:#8893A8;--faint:#5A6478;
     --teal:#3DD6D0;--teal-dim:#1f6b68;--amber:#FFB13C;--red:#FF5C6C;--green:#4ADE80;
     --radius:14px;--shadow:0 10px 40px rgba(0,0,0,.45);
+    --safe-b:env(safe-area-inset-bottom,0px);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
@@ -46,10 +48,10 @@
   .field{margin-bottom:15px}
   .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px;font-weight:500}
   .field input,.field select{width:100%;background:var(--ink);border:1px solid var(--border);border-radius:10px;
-    padding:12px 14px;color:var(--text);font-size:14px;transition:border-color .15s, box-shadow .15s;}
+    padding:12px 14px;color:var(--text);font-size:16px;transition:border-color .15s, box-shadow .15s;}
   .field input:focus,.field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(61,214,208,.15)}
-  .btn-primary{width:100%;margin-top:8px;background:var(--teal);color:#04201f;font-weight:600;font-size:14.5px;
-    padding:13px;border-radius:10px;transition:transform .12s, box-shadow .2s;}
+  .btn-primary{width:100%;margin-top:8px;background:var(--teal);color:#04201f;font-weight:600;font-size:15px;
+    padding:14px;border-radius:10px;transition:transform .12s, box-shadow .2s;}
   .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(61,214,208,.35)}
   .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
   .login-foot{margin-top:18px;text-align:center;font-size:12.5px;color:var(--faint)}
@@ -67,7 +69,7 @@
     display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;}
   .sidebar .brand{margin-bottom:26px;padding:0 8px}
   .nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--faint);padding:0 12px;margin:18px 0 8px;font-weight:600}
-  .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;color:var(--muted);
+  .nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);
     font-size:14px;font-weight:500;transition:background .14s,color .14s;width:100%;text-align:left;position:relative}
   .nav-item svg{width:18px;height:18px;flex-shrink:0;stroke-width:1.8}
   .nav-item:hover{background:var(--surface-2);color:var(--text)}
@@ -86,106 +88,111 @@
   .logout svg{width:16px;height:16px}
 
   /* MAIN */
-  .main{overflow-x:hidden}
-  .topbar{display:flex;align-items:center;gap:18px;padding:20px 34px;border-bottom:1px solid var(--border-soft);
-    position:sticky;top:0;background:rgba(11,14,20,.78);backdrop-filter:blur(12px);z-index:20;}
-  .topbar h1{font-size:21px;font-weight:600}
+  .main{overflow-x:hidden;min-width:0}
+  .topbar{display:flex;align-items:center;gap:14px;padding:18px 28px;border-bottom:1px solid var(--border-soft);
+    position:sticky;top:0;background:rgba(11,14,20,.82);backdrop-filter:blur(12px);z-index:20;}
+  .topbar h1{font-size:20px;font-weight:600;flex-shrink:0}
   .search{margin-left:auto;display:flex;align-items:center;gap:9px;background:var(--surface);
-    border:1px solid var(--border);border-radius:10px;padding:9px 13px;width:280px;transition:border-color .15s;}
+    border:1px solid var(--border);border-radius:10px;padding:10px 13px;width:280px;transition:border-color .15s;}
   .search:focus-within{border-color:var(--teal)}
   .search svg{width:16px;height:16px;color:var(--muted);flex-shrink:0}
-  .search input{background:none;border:none;outline:none;color:var(--text);font-size:13.5px;width:100%}
+  .search input{background:none;border:none;outline:none;color:var(--text);font-size:15px;width:100%}
   .search input::placeholder{color:var(--faint)}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:10px;font-size:13.5px;
-    font-weight:600;transition:transform .12s,background .15s,border-color .15s;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;
+    font-size:13.5px;font-weight:600;transition:transform .12s,background .15s,border-color .15s;}
   .btn svg{width:16px;height:16px;stroke-width:2}
+  .btn.sm{padding:8px 12px;font-size:12.5px}
   .btn-teal{background:var(--teal);color:#04201f}
   .btn-teal:hover{transform:translateY(-1px)}
   .btn-ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
   .btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
-  .btn-danger{background:rgba(255,92,108,.12);color:var(--red);border:1px solid rgba(255,92,108,.25)}
-  .btn-danger:hover{background:rgba(255,92,108,.2)}
-  .view{padding:28px 34px 48px;animation:fade .35s ease}
+  .view{padding:24px 28px 60px;animation:fade .35s ease}
   @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .hidden{display:none!important}
 
   /* KPI */
-  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
   .kpi{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);
-    padding:18px 20px;position:relative;overflow:hidden;}
+    padding:16px 18px;position:relative;overflow:hidden;}
   .kpi::after{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--teal);opacity:.7}
   .kpi.warn::after{background:var(--amber)} .kpi.crit::after{background:var(--red)}
-  .kpi .k-label{font-size:12px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:7px}
-  .kpi .k-label svg{width:15px;height:15px}
-  .kpi .k-value{font-family:'Space Grotesk';font-size:30px;font-weight:700;margin-top:10px;letter-spacing:-.02em}
-  .kpi .k-value small{font-size:15px;color:var(--muted);font-weight:500}
-  .kpi .k-delta{font-size:12px;margin-top:6px;font-family:'JetBrains Mono';color:var(--faint)}
+  .kpi .k-label{font-size:11.5px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:7px}
+  .kpi .k-label svg{width:15px;height:15px;flex-shrink:0}
+  .kpi .k-value{font-family:'Space Grotesk';font-size:28px;font-weight:700;margin-top:8px;letter-spacing:-.02em}
+  .kpi .k-delta{font-size:11.5px;margin-top:4px;font-family:'JetBrains Mono';color:var(--faint)}
 
-  .grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+  .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
   .card{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);overflow:hidden}
-  .card-head{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;border-bottom:1px solid var(--border-soft)}
+  .card-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border-soft)}
   .card-head h3{font-size:15px;font-weight:600}
   .card-head .link{font-size:12.5px;color:var(--teal);font-weight:600;cursor:pointer}
-  .card-body{padding:8px 20px 16px;min-height:60px}
+  .card-body{padding:6px 18px 14px;min-height:60px}
 
-  /* ALERT + GAUGE */
-  .alert-row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border-soft)}
-  .alert-row:last-child{border-bottom:none}
-  .ar-info{flex:1;min-width:0}
-  .ar-name{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ar-sku{font-size:11px;color:var(--faint);font-family:'JetBrains Mono';margin-top:2px}
-  .gauge{width:130px;flex-shrink:0}
+  /* GAUGE */
   .gauge-track{height:8px;background:var(--surface-3);border-radius:6px;overflow:hidden;position:relative}
   .gauge-fill{height:100%;border-radius:6px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
   .gauge-min{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--text);opacity:.5}
-  .gauge-meta{display:flex;justify-content:space-between;margin-top:5px;font-size:10.5px;font-family:'JetBrains Mono';color:var(--faint)}
   .pill{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap}
   .pill.ok{background:rgba(74,222,128,.12);color:var(--green)}
   .pill.low{background:rgba(255,177,60,.14);color:var(--amber)}
   .pill.out{background:rgba(255,92,108,.14);color:var(--red)}
 
+  /* ALERT ROWS */
+  .alert-row{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--border-soft)}
+  .alert-row:last-child{border-bottom:none}
+  .prod-thumb{width:38px;height:38px;border-radius:9px;background:var(--surface-3);display:grid;place-items:center;font-size:17px;flex-shrink:0}
+  .ar-info{flex:1;min-width:0}
+  .ar-name{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ar-sku{font-size:11px;color:var(--faint);font-family:'JetBrains Mono';margin-top:2px}
+
+  /* MOVE FEED */
   .move{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--border-soft)}
   .move:last-child{border-bottom:none}
-  .move-ico{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex-shrink:0}
+  .move-ico{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;flex-shrink:0}
   .move-ico svg{width:17px;height:17px;stroke-width:2.2}
   .move-ico.in{background:rgba(74,222,128,.12);color:var(--green)}
   .move-ico.out{background:rgba(255,92,108,.12);color:var(--red)}
   .move-info{flex:1;min-width:0}
-  .move-info .t{font-size:13px;font-weight:500}
-  .move-info .s{font-size:11.5px;color:var(--faint);margin-top:2px}
-  .move-qty{font-family:'JetBrains Mono';font-weight:700;font-size:14px}
+  .move-info .t{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .move-info .s{font-size:11.5px;color:var(--faint);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .move-qty{font-family:'JetBrains Mono';font-weight:700;font-size:14px;text-align:right;flex-shrink:0}
   .move-qty.in{color:var(--green)} .move-qty.out{color:var(--red)}
+  .move-list{display:flex;flex-direction:column}
 
-  /* TABLE */
-  .table-wrap{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);overflow:auto}
-  table{width:100%;border-collapse:collapse;min-width:560px}
-  thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);
-    font-weight:600;padding:14px 18px;border-bottom:1px solid var(--border-soft);white-space:nowrap}
-  tbody td{padding:14px 18px;border-bottom:1px solid var(--border-soft);font-size:13.5px;vertical-align:middle}
-  tbody tr:last-child td{border-bottom:none}
-  tbody tr{transition:background .12s}
-  tbody tr:hover{background:var(--surface-2)}
-  .prod-cell{display:flex;align-items:center;gap:12px}
-  .prod-thumb{width:38px;height:38px;border-radius:9px;background:var(--surface-3);display:grid;place-items:center;font-size:17px;flex-shrink:0}
-  .prod-name{font-weight:600}
-  .prod-cat{font-size:11.5px;color:var(--faint);margin-top:1px;text-transform:capitalize}
-  td .mono{font-size:12.5px;color:var(--muted)}
-  .row-actions{display:flex;gap:6px;justify-content:flex-end}
-  .icon-btn{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;background:var(--surface-2);
+  /* PRODUCT CARDS */
+  .filter-chips{display:flex;gap:9px;margin-bottom:18px;flex-wrap:wrap}
+  .chip{padding:9px 15px;border-radius:20px;font-size:13px;font-weight:500;background:var(--surface);
     border:1px solid var(--border);color:var(--muted);transition:.14s}
+  .chip:hover{color:var(--text)} .chip.on{background:rgba(61,214,208,.12);border-color:transparent;color:var(--teal)}
+  .pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .pcard{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px}
+  .pcard-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .pcard-id{flex:1;min-width:0}
+  .pcard-id .prod-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pcard-id .ar-sku{font-size:11.5px}
+  .pcard-total{display:flex;align-items:baseline;gap:8px;margin-bottom:10px}
+  .big-num{font-family:'Space Grotesk';font-size:26px;font-weight:700;letter-spacing:-.02em}
+  .pcard-total .unit{font-size:12.5px;color:var(--muted)}
+  .pcard-total .mininfo{margin-left:auto;font-size:11.5px;color:var(--faint);font-family:'JetBrains Mono'}
+  .loc-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .locb{display:flex;flex-direction:column;gap:1px;background:var(--surface-2);border:1px solid var(--border);
+    border-radius:9px;padding:7px 11px;min-width:64px}
+  .locb i{font-style:normal;font-size:10.5px;color:var(--faint)}
+  .locb b{font-family:'JetBrains Mono';font-size:15px;font-weight:700}
+  .locb.zero{opacity:.45} .locb.zero b{color:var(--muted)}
+  .locb.hi{border-color:var(--teal);background:rgba(61,214,208,.08)} .locb.hi i{color:var(--teal)}
+  .pcard-actions{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-soft)}
+  .pcard-actions .btn{flex:1}
+  .icon-btn{width:40px;height:40px;border-radius:9px;display:grid;place-items:center;background:var(--surface-2);
+    border:1px solid var(--border);color:var(--muted);transition:.14s;flex-shrink:0}
   .icon-btn:hover{color:var(--teal);border-color:var(--teal)}
   .icon-btn.del:hover{color:var(--red);border-color:var(--red)}
-  .icon-btn svg{width:15px;height:15px;stroke-width:2}
-  .filter-chips{display:flex;gap:9px;margin-bottom:18px;flex-wrap:wrap}
-  .chip{padding:7px 14px;border-radius:20px;font-size:12.5px;font-weight:500;background:var(--surface);
-    border:1px solid var(--border);color:var(--muted);transition:.14s}
-  .chip:hover{color:var(--text)}
-  .chip.on{background:rgba(61,214,208,.12);border-color:transparent;color:var(--teal)}
+  .icon-btn svg{width:16px;height:16px;stroke-width:2}
 
   /* SCANNER */
-  .scan-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .scan-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
   .scanner{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);
-    padding:24px;display:flex;flex-direction:column;align-items:center;}
+    padding:22px;display:flex;flex-direction:column;align-items:center;}
   #reader{width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
   .viewport{width:100%;aspect-ratio:4/3;border-radius:12px;position:relative;overflow:hidden;
     background:radial-gradient(circle at 50% 40%, #10202a, var(--ink));border:1px solid var(--border);}
@@ -200,10 +207,6 @@
   @keyframes scan{0%,100%{top:20%}50%{top:78%}}
   .scan-hint{color:var(--muted);font-size:13px;margin-top:18px;text-align:center}
   .scan-code{font-family:'JetBrains Mono';color:var(--teal);font-size:15px;margin-top:6px;letter-spacing:.05em;min-height:18px}
-  .recent-scans .rs{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-soft)}
-  .recent-scans .rs:last-child{border-bottom:none}
-  .qr-mini{width:34px;height:34px;border-radius:8px;background:var(--surface-3);display:grid;place-items:center}
-  .qr-mini svg{width:18px;height:18px;color:var(--teal)}
 
   /* USERS */
   .users-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -211,7 +214,6 @@
   .user-card .top{display:flex;align-items:center;gap:13px;margin-bottom:16px}
   .user-card .avatar{width:44px;height:44px;border-radius:11px;font-size:16px}
   .user-card .uname{font-size:15px;font-weight:600;font-family:'Space Grotesk'}
-  .user-card .umail{font-size:12px;color:var(--faint);margin-top:1px}
   .role-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block}
   .role-admin{background:rgba(61,214,208,.13);color:var(--teal)}
   .role-warehouse{background:rgba(255,177,60,.13);color:var(--amber)}
@@ -219,9 +221,8 @@
   .user-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--faint);margin-top:14px;padding-top:14px;border-top:1px solid var(--border-soft)}
   .section-title{font-size:13px;color:var(--muted);font-weight:600;margin:0 0 14px;text-transform:uppercase;letter-spacing:.06em}
 
-  /* EMPTY + LOADING */
-  .empty{text-align:center;padding:48px 20px;color:var(--faint)}
-  .empty svg{width:38px;height:38px;margin-bottom:12px;opacity:.5}
+  /* EMPTY / LOADING */
+  .empty{text-align:center;padding:44px 20px;color:var(--faint)}
   .empty h4{font-size:15px;color:var(--muted);font-weight:600;margin-bottom:5px;font-family:'Space Grotesk'}
   .empty p{font-size:13px}
   .spinner{width:22px;height:22px;border:2.5px solid var(--border);border-top-color:var(--teal);
@@ -230,21 +231,23 @@
 
   /* MODAL */
   .modal-bg{position:fixed;inset:0;background:rgba(5,7,12,.7);backdrop-filter:blur(4px);z-index:60;
-    display:none;align-items:center;justify-content:center;padding:20px}
+    display:none;align-items:center;justify-content:center;padding:16px}
   .modal-bg.on{display:flex;animation:fade .2s ease}
   .modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;width:100%;
-    max-width:480px;box-shadow:var(--shadow);max-height:90vh;overflow:auto;animation:rise .3s cubic-bezier(.2,.8,.2,1)}
-  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border-soft)}
+    max-width:480px;box-shadow:var(--shadow);max-height:92vh;overflow:auto;animation:rise .3s cubic-bezier(.2,.8,.2,1)}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border-soft);position:sticky;top:0;background:var(--surface);z-index:2}
   .modal-head h3{font-size:17px;font-weight:600}
-  .modal-head .x{color:var(--faint);width:30px;height:30px;border-radius:8px;display:grid;place-items:center;transition:.14s}
+  .modal-head .x{color:var(--faint);width:34px;height:34px;border-radius:8px;display:grid;place-items:center;transition:.14s}
   .modal-head .x:hover{background:var(--surface-2);color:var(--text)}
-  .modal-body{padding:22px 24px}
+  .modal-body{padding:20px 22px}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .form-grid .full{grid-column:1/-1}
-  .modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:18px 24px;border-top:1px solid var(--border-soft)}
+  .sub-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);font-weight:600;margin:4px 0 10px}
+  .modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:16px 22px;border-top:1px solid var(--border-soft);position:sticky;bottom:0;background:var(--surface)}
+  .modal-foot .btn{flex:1}
   .seg{display:flex;gap:8px}
-  .seg button{flex:1;padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--ink);
-    color:var(--muted);font-weight:600;font-size:13.5px;transition:.14s}
+  .seg button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--ink);
+    color:var(--muted);font-weight:600;font-size:14px;transition:.14s}
   .seg button.on-in{border-color:var(--green);background:rgba(74,222,128,.12);color:var(--green)}
   .seg button.on-out{border-color:var(--red);background:rgba(255,92,108,.12);color:var(--red)}
 
@@ -260,28 +263,38 @@
     .grid-2,.scan-grid{grid-template-columns:1fr}
     .users-grid{grid-template-columns:repeat(2,1fr)}
   }
+  /* ---- MÓVIL ---- */
   @media (max-width:760px){
     #app.on{grid-template-columns:1fr}
     .sidebar{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;width:100%;
-      padding:8px;gap:2px;z-index:30;justify-content:space-around;border-top:1px solid var(--border)}
+      padding:6px 6px calc(6px + var(--safe-b));gap:2px;z-index:30;justify-content:space-around;
+      border-top:1px solid var(--border);border-right:none;background:rgba(20,25,35,.96);backdrop-filter:blur(12px)}
     .sidebar .brand,.nav-label,.sidebar-foot{display:none}
-    .nav-item{flex-direction:column;gap:4px;font-size:10px;padding:8px 4px;text-align:center}
-    .nav-item .badge.show{position:absolute;margin:0;top:2px;right:16%}
-    .main{padding-bottom:74px}
-    .topbar{padding:16px 18px;flex-wrap:wrap}
-    .search{width:100%;order:3;margin-left:0}
-    .view{padding:20px 18px 40px}
-    .kpi-grid{grid-template-columns:1fr 1fr;gap:12px}
+    .nav-item{flex-direction:column;gap:3px;font-size:10px;padding:7px 4px;text-align:center;flex:1}
+    .nav-item svg{width:21px;height:21px}
+    .nav-item .badge.show{position:absolute;margin:0;top:2px;right:50%;transform:translateX(16px)}
+    .main{padding-bottom:calc(72px + var(--safe-b))}
+    .topbar{padding:14px 16px;gap:10px;flex-wrap:wrap}
+    .topbar h1{font-size:19px}
+    .search{width:100%;order:3;margin-left:0;padding:12px 14px}
+    .view{padding:18px 16px 40px}
+    .kpi-grid{grid-template-columns:1fr 1fr;gap:10px}
+    .kpi{padding:14px}
+    .kpi .k-value{font-size:24px}
     .users-grid{grid-template-columns:1fr}
-    .gauge{width:90px}
-    .form-grid{grid-template-columns:1fr}
-    #toasts{left:16px;right:16px;bottom:84px}
+    .pcards{grid-template-columns:1fr}
+    .filter-chips{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px;margin:0 -16px 16px;padding-left:16px;padding-right:16px}
+    .chip{flex-shrink:0}
+    .modal-bg{padding:0;align-items:flex-end}
+    .modal{max-width:100%;border-radius:18px 18px 0 0;max-height:94vh}
+    #toasts{left:14px;right:14px;bottom:calc(84px + var(--safe-b))}
+    .toast{max-width:none}
   }
 </style>
 </head>
 <body>
 
-<!-- ============ LOGIN ============ -->
+<!-- LOGIN -->
 <div id="login">
   <div class="login-card">
     <div class="brand">
@@ -292,24 +305,15 @@
     <div class="login-err" id="login-err"></div>
     <h2 id="login-title">Bienvenido de nuevo</h2>
     <p class="sub" id="login-sub">Accede al inventario</p>
-    <div class="field" id="name-field" style="display:none">
-      <label>Nombre</label>
-      <input type="text" id="i-name" placeholder="Tu nombre">
-    </div>
-    <div class="field">
-      <label>Correo</label>
-      <input type="email" id="i-email" autocomplete="username" placeholder="tu@correo.com">
-    </div>
-    <div class="field">
-      <label>Contraseña</label>
-      <input type="password" id="i-pass" autocomplete="current-password" placeholder="••••••••">
-    </div>
+    <div class="field" id="name-field" style="display:none"><label>Nombre</label><input type="text" id="i-name" placeholder="Tu nombre"></div>
+    <div class="field"><label>Correo</label><input type="email" id="i-email" autocomplete="username" placeholder="tu@correo.com"></div>
+    <div class="field"><label>Contraseña</label><input type="password" id="i-pass" autocomplete="current-password" placeholder="••••••••"></div>
     <button class="btn-primary" id="login-btn" onclick="submitAuth()">Entrar</button>
     <p class="login-foot" id="login-toggle">¿No tienes cuenta? <a onclick="toggleMode()">Crear cuenta</a></p>
   </div>
 </div>
 
-<!-- ============ APP ============ -->
+<!-- APP -->
 <div id="app">
   <aside class="sidebar">
     <div class="brand">
@@ -320,12 +324,11 @@
     <button class="nav-item active" data-view="panel" onclick="go('panel',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Panel</button>
     <button class="nav-item" data-view="productos" onclick="go('productos',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>Productos</button>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Buscar</button>
     <button class="nav-item" data-view="movimientos" onclick="go('movimientos',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>Movimientos</button>
     <button class="nav-item" data-view="escaner" onclick="go('escaner',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>Escáner
-      <span class="badge" id="nav-badge"></span></button>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>Escáner<span class="badge" id="nav-badge"></span></button>
     <div class="nav-label">Administración</div>
     <button class="nav-item" data-view="usuarios" onclick="go('usuarios',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Usuarios</button>
@@ -333,9 +336,7 @@
       <div class="user-chip">
         <div class="avatar" id="me-avatar" style="background:linear-gradient(135deg,var(--teal),var(--teal-dim))">··</div>
         <div><div class="name" id="me-name">—</div><div class="role" id="me-role">—</div></div>
-        <button class="logout" onclick="logout()" title="Cerrar sesión">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-        </button>
+        <button class="logout" onclick="logout()" title="Cerrar sesión"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
       </div>
     </div>
   </aside>
@@ -343,13 +344,12 @@
   <main class="main">
     <div class="topbar">
       <h1 id="page-title">Panel</h1>
-      <div class="search">
+      <div class="search" id="topsearch" style="display:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="search-input" placeholder="Buscar producto, SKU…" oninput="onSearch(this.value)">
+        <input id="search-input" placeholder="Buscar producto, SKU o código…" oninput="onSearch(this.value)">
       </div>
       <button class="btn btn-teal" id="primary-action" onclick="primaryAction()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        <span>Nuevo producto</span></button>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>Nuevo producto</span></button>
     </div>
 
     <!-- PANEL -->
@@ -367,15 +367,10 @@
       </div>
     </section>
 
-    <!-- PRODUCTOS -->
+    <!-- PRODUCTOS / BUSCAR -->
     <section class="view hidden" id="view-productos">
-      <div class="filter-chips" id="cat-chips"></div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Producto</th><th>SKU</th><th>Nivel de stock</th><th>Estado</th><th style="text-align:right">Precio</th><th></th></tr></thead>
-          <tbody id="prod-rows"></tbody>
-        </table>
-      </div>
+      <div class="filter-chips" id="loc-chips"></div>
+      <div class="pcards" id="prod-cards"></div>
     </section>
 
     <!-- MOVIMIENTOS -->
@@ -385,34 +380,23 @@
         <button class="chip" onclick="setMoveFilter('in',this)">Entradas</button>
         <button class="chip" onclick="setMoveFilter('out',this)">Salidas</button>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Tipo</th><th>Producto</th><th>Cantidad</th><th>Motivo</th><th>Usuario</th><th style="text-align:right">Fecha</th></tr></thead>
-          <tbody id="move-rows"></tbody>
-        </table>
-      </div>
+      <div class="card"><div class="card-body move-list" id="move-list" style="padding:6px 18px"></div></div>
     </section>
 
     <!-- ESCÁNER -->
     <section class="view hidden" id="view-escaner">
       <div class="scan-grid">
         <div class="scanner">
-          <div class="viewport" id="scan-viewport">
-            <div class="reticle"><span></span><span></span><span></span><span></span></div>
-            <div class="scanline"></div>
-          </div>
+          <div class="viewport" id="scan-viewport"><div class="reticle"><span></span><span></span><span></span><span></span></div><div class="scanline"></div></div>
           <div id="reader" style="display:none"></div>
           <p class="scan-hint" id="scan-hint">Apunta al código de barras o QR del producto</p>
           <p class="scan-code" id="scan-code"></p>
-          <button class="btn btn-ghost" id="scan-toggle" style="margin-top:18px" onclick="toggleScanner()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-            Activar cámara</button>
+          <button class="btn btn-ghost" id="scan-toggle" style="margin-top:18px;width:100%" onclick="toggleScanner()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>Activar cámara</button>
         </div>
-        <div class="card recent-scans">
+        <div class="card">
           <div class="card-head"><h3>Resultado</h3></div>
-          <div class="card-body" id="scan-result">
-            <div class="empty"><p>Escanea un producto para verlo aquí y registrar una entrada o salida al instante.</p></div>
-          </div>
+          <div class="card-body" id="scan-result"><div class="empty"><p>Escanea un producto para ver en qué ubicaciones está y registrar una entrada o salida.</p></div></div>
         </div>
       </div>
     </section>
@@ -425,7 +409,7 @@
   </main>
 </div>
 
-<!-- ============ MODALES ============ -->
+<!-- MODAL PRODUCTO -->
 <div class="modal-bg" id="product-modal">
   <div class="modal">
     <div class="modal-head"><h3 id="pm-title">Nuevo producto</h3><button class="x" onclick="closeModal('product-modal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
@@ -434,13 +418,12 @@
         <div class="field full"><label>Nombre *</label><input id="p-name" placeholder="Ginebra Premium 70cl"></div>
         <div class="field"><label>SKU</label><input id="p-sku" placeholder="GIN-PRM-070"></div>
         <div class="field"><label>Código de barras</label><input id="p-barcode" placeholder="7612345678900"></div>
-        <div class="field"><label>Categoría</label><select id="p-category"></select></div>
+        <div class="field"><label>Tipo</label><select id="p-category"></select></div>
         <div class="field"><label>Proveedor</label><input id="p-supplier" placeholder="Distribuidora"></div>
-        <div class="field"><label>Stock actual *</label><input id="p-stock" type="number" min="0" value="0"></div>
-        <div class="field"><label>Stock mínimo *</label><input id="p-min" type="number" min="0" value="0"></div>
-        <div class="field"><label>Precio (€)</label><input id="p-price" type="number" min="0" step="0.01" value="0"></div>
-        <div class="field"><label>Ubicación</label><input id="p-location" placeholder="Almacén / barra"></div>
+        <div class="field full"><label>Stock mínimo (total) *</label><input id="p-min" type="number" min="0" value="0"></div>
       </div>
+      <p class="sub-label">Existencias por ubicación</p>
+      <div class="form-grid" id="p-locqty"></div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('product-modal')">Cancelar</button>
@@ -449,11 +432,13 @@
   </div>
 </div>
 
+<!-- MODAL MOVIMIENTO -->
 <div class="modal-bg" id="move-modal">
   <div class="modal">
     <div class="modal-head"><h3 id="mm-title">Registrar movimiento</h3><button class="x" onclick="closeModal('move-modal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
     <div class="modal-body">
-      <div class="field"><label>Producto *</label><select id="m-product"></select></div>
+      <div class="field"><label>Producto *</label><select id="m-product" onchange="updateMoveHint()"></select></div>
+      <div class="field"><label>Ubicación *</label><select id="m-location" onchange="updateMoveHint()"></select></div>
       <div class="field"><label>Tipo *</label>
         <div class="seg" id="m-seg">
           <button data-t="in" class="on-in" onclick="setMoveType('in')">↓ Entrada</button>
@@ -464,6 +449,7 @@
         <div class="field"><label>Cantidad *</label><input id="m-qty" type="number" min="1" value="1"></div>
         <div class="field"><label>Motivo</label><input id="m-reason" placeholder="Pedido, consumo…"></div>
       </div>
+      <p class="sub-label" id="m-hint" style="margin-bottom:0"></p>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('move-modal')">Cancelar</button>
@@ -476,8 +462,7 @@
 
 <script>
 // =====================================================================
-//  CONFIGURACIÓN — pega aquí tus claves de Supabase
-//  (Supabase → Project Settings → API → Project URL y anon public key)
+//  CONFIGURACIÓN — claves de Supabase (Project Settings → API)
 // =====================================================================
 const CONFIG = {
   SUPABASE_URL:      "https://thdoehjzrbzinolqxlzr.supabase.co",
@@ -494,77 +479,77 @@ const CATS = {
   otros:     {label:'Otros',      emoji:'📦'}
 };
 
+// --- TUS 3 UBICACIONES --- (edita solo el texto de "label" si cambian)
+const LOCATIONS = {
+  otitanuz:{label:'Otitanuz'},
+  hoguera: {label:'La Hoguera'},
+  almacen: {label:'Almacén'}
+};
+
 let sb=null, me=null, profile=null;
-let products=[], movements=[], profiles=[];
-let curView='panel', catFilter='all', moveFilter='all', searchTerm='', editingId=null, moveType='in';
-let scanner=null, scanning=false, lastScans=[];
-let authMode='login';
+let products=[], stockRows=[], movements=[], profiles=[];
+let stockMap={}, totals={};
+let curView='panel', locFilter='all', moveFilter='all', searchTerm='', editingId=null, moveType='in';
+let scanner=null, scanning=false, authMode='login';
 
 const $ = id => document.getElementById(id);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const emojiFor = c => (CATS[c]||CATS.otros).emoji;
 
-// ---------- ARRANQUE ----------
 function configured(){ return CONFIG.SUPABASE_URL && !CONFIG.SUPABASE_URL.includes("PEGA_AQUI") && CONFIG.SUPABASE_ANON_KEY && !CONFIG.SUPABASE_ANON_KEY.includes("PEGA_AQUI"); }
 
 async function init(){
   if(!configured()){
     $('setup-banner').style.display='block';
-    $('setup-banner').innerHTML='⚙️ <b>Falta configurar Supabase.</b> Abre <code>index.html</code> y pega tu <code>SUPABASE_URL</code> y <code>SUPABASE_ANON_KEY</code> en el bloque CONFIG (arriba del script). Encuéntralas en Supabase → Project Settings → API.';
-    $('login-btn').disabled=true;
-    return;
+    $('setup-banner').innerHTML='⚙️ <b>Falta configurar Supabase.</b> Pega tu <code>SUPABASE_URL</code> y <code>SUPABASE_ANON_KEY</code> en el bloque CONFIG.';
+    $('login-btn').disabled=true; return;
   }
   sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
   const { data:{ session } } = await sb.auth.getSession();
   if(session){ me=session.user; await boot(); }
-  sb.auth.onAuthStateChange((_e, s)=>{ if(!s && $('app').classList.contains('on')) location.reload(); });
+  sb.auth.onAuthStateChange((_e,s)=>{ if(!s && $('app').classList.contains('on')) location.reload(); });
 }
 
 // ---------- AUTH ----------
 function toggleMode(){
   authMode = authMode==='login' ? 'signup' : 'login';
-  const signup = authMode==='signup';
-  $('name-field').style.display = signup?'block':'none';
-  $('login-title').textContent = signup?'Crear cuenta':'Bienvenido de nuevo';
-  $('login-sub').textContent = signup?'Regístrate para acceder al inventario':'Accede al inventario';
-  $('login-btn').textContent = signup?'Crear cuenta':'Entrar';
-  $('login-toggle').innerHTML = signup?'¿Ya tienes cuenta? <a onclick="toggleMode()">Inicia sesión</a>':'¿No tienes cuenta? <a onclick="toggleMode()">Crear cuenta</a>';
+  const su = authMode==='signup';
+  $('name-field').style.display = su?'block':'none';
+  $('login-title').textContent = su?'Crear cuenta':'Bienvenido de nuevo';
+  $('login-sub').textContent = su?'Regístrate para acceder al inventario':'Accede al inventario';
+  $('login-btn').textContent = su?'Crear cuenta':'Entrar';
+  $('login-toggle').innerHTML = su?'¿Ya tienes cuenta? <a onclick="toggleMode()">Inicia sesión</a>':'¿No tienes cuenta? <a onclick="toggleMode()">Crear cuenta</a>';
   $('login-err').style.display='none';
 }
 async function submitAuth(){
   const email=$('i-email').value.trim(), pass=$('i-pass').value, name=$('i-name').value.trim();
-  const err=$('login-err'); err.style.display='none';
+  const err=$('login-err'); err.style.display='none'; err.style.color='';
   if(!email||!pass){ err.textContent='Introduce correo y contraseña.'; err.style.display='block'; return; }
   $('login-btn').disabled=true; $('login-btn').textContent='…';
   try{
     if(authMode==='signup'){
       const { data, error } = await sb.auth.signUp({ email, password:pass, options:{ data:{ full_name:name||email } } });
       if(error) throw error;
-      if(!data.session){ err.style.display='block'; err.style.color='#9affc4'; err.textContent='Cuenta creada. Revisa tu correo para confirmarla y luego inicia sesión.'; toggleMode(); return; }
+      if(!data.session){ err.style.color='#9affc4'; err.textContent='Cuenta creada. Confirma tu correo e inicia sesión.'; err.style.display='block'; toggleMode(); return; }
       me=data.user; await boot();
     } else {
       const { data, error } = await sb.auth.signInWithPassword({ email, password:pass });
-      if(error) throw error;
-      me=data.user; await boot();
+      if(error) throw error; me=data.user; await boot();
     }
   }catch(e){
-    err.textContent = e.message?.includes('Invalid login')?'Correo o contraseña incorrectos.':(e.message||'Error de acceso.');
+    err.textContent = (e.message||'').includes('Invalid login')?'Correo o contraseña incorrectos.':(e.message||'Error de acceso.');
     err.style.display='block';
-  }finally{
-    $('login-btn').disabled=false;
-    $('login-btn').textContent = authMode==='signup'?'Crear cuenta':'Entrar';
-  }
+  }finally{ $('login-btn').disabled=false; $('login-btn').textContent = authMode==='signup'?'Crear cuenta':'Entrar'; }
 }
 async function logout(){ await sb.auth.signOut(); location.reload(); }
 
 // ---------- BOOT ----------
 async function boot(){
-  $('login').style.display='none';
-  $('app').classList.add('on');
+  $('login').style.display='none'; $('app').classList.add('on');
   await loadProfile();
+  fillProductForm();
   await refreshData();
   subscribeRealtime();
-  buildCatChips();
-  fillCategorySelect();
   applyRoleUI();
   sb.from('profiles').update({ last_seen:new Date().toISOString() }).eq('id', me.id).then(()=>{});
 }
@@ -572,119 +557,122 @@ async function loadProfile(){
   const { data } = await sb.from('profiles').select('*').eq('id', me.id).single();
   profile = data || { full_name: me.email, role:'read' };
   const nm = profile.full_name || me.email;
-  $('me-name').textContent = nm;
-  $('me-role').textContent = roleLabel(profile.role);
-  $('me-avatar').textContent = initials(nm);
+  $('me-name').textContent = nm; $('me-role').textContent = roleLabel(profile.role); $('me-avatar').textContent = initials(nm);
 }
 function roleLabel(r){ return {admin:'Administrador', warehouse:'Almacén', read:'Solo lectura'}[r]||r; }
 function initials(n){ return (n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
 function canWrite(){ return profile && (profile.role==='admin'||profile.role==='warehouse'); }
-function applyRoleUI(){
-  const show = canWrite();
-  $('primary-action').style.display = show?'inline-flex':'none';
-}
+function applyRoleUI(){ $('primary-action').style.display = canWrite()?'inline-flex':'none'; }
 
 async function refreshData(){
-  const [p,m,pr] = await Promise.all([
+  const [p,s,m,pr] = await Promise.all([
     sb.from('products').select('*').order('name'),
+    sb.from('stock').select('*'),
     sb.from('movements').select('*, products(name)').order('created_at',{ascending:false}).limit(200),
     sb.from('profiles').select('*').order('created_at')
   ]);
-  products = p.data||[]; movements = m.data||[]; profiles = pr.data||[];
+  products=p.data||[]; stockRows=s.data||[]; movements=m.data||[]; profiles=pr.data||[];
+  buildStockMap();
   renderPanel(); renderProducts(); renderMovements(); renderUsers(); updateBadge();
 }
+function buildStockMap(){
+  stockMap={}; totals={};
+  products.forEach(pr=>{ stockMap[pr.id]={}; Object.keys(LOCATIONS).forEach(l=>stockMap[pr.id][l]=0); totals[pr.id]=0; });
+  stockRows.forEach(r=>{ if(!stockMap[r.product_id]) stockMap[r.product_id]={}; stockMap[r.product_id][r.location]=r.quantity; });
+  products.forEach(pr=>{ totals[pr.id]=Object.values(stockMap[pr.id]).reduce((a,b)=>a+(b||0),0); });
+}
+const total = p => totals[p.id]||0;
+const qtyAt = (p,l) => (stockMap[p.id]&&stockMap[p.id][l])||0;
 
 // ---------- ESTADO / GAUGE ----------
-function statusOf(p){
-  if(p.stock===0) return{cls:'out',label:'Agotado',color:'var(--red)'};
-  if(p.stock<p.min_stock) return{cls:'low',label:'Stock bajo',color:'var(--amber)'};
-  if(p.stock<p.min_stock*1.5) return{cls:'low',label:'Atención',color:'var(--amber)'};
+function statusOf(t,min){
+  if(t===0) return{cls:'out',label:'Agotado',color:'var(--red)'};
+  if(t<min) return{cls:'low',label:'Stock bajo',color:'var(--amber)'};
+  if(t<min*1.5) return{cls:'low',label:'Atención',color:'var(--amber)'};
   return{cls:'ok',label:'Disponible',color:'var(--green)'};
 }
-function gaugeHTML(p){
-  const cap=Math.max(p.min_stock*2, p.stock, 1);
-  const pct=Math.min(100,Math.round(p.stock/cap*100));
-  const minPct=Math.min(100,Math.round(p.min_stock/cap*100));
-  const s=statusOf(p);
-  return `<div class="gauge"><div class="gauge-track">
-    <div class="gauge-fill" style="width:${pct}%;background:${s.color}"></div>
-    <div class="gauge-min" style="left:${minPct}%"></div></div>
-    <div class="gauge-meta"><span>${p.stock} ud.</span><span>mín ${p.min_stock}</span></div></div>`;
+function gaugeBar(t,min){
+  const cap=Math.max(min*2,t,1), pct=Math.min(100,Math.round(t/cap*100)), minPct=Math.min(100,Math.round(min/cap*100));
+  const s=statusOf(t,min);
+  return `<div class="gauge-track"><div class="gauge-fill" style="width:${pct}%;background:${s.color}"></div><div class="gauge-min" style="left:${minPct}%"></div></div>`;
 }
-const emojiFor = c => (CATS[c]||CATS.otros).emoji;
 
 // ---------- PANEL ----------
 function renderPanel(){
-  const total=products.length;
-  const value=products.reduce((a,p)=>a+(p.stock*(p.price||0)),0);
-  const low=products.filter(p=>p.stock>0 && p.stock<p.min_stock*1.5).length;
-  const out=products.filter(p=>p.stock===0).length;
+  const refs=products.length;
+  const units=products.reduce((a,p)=>a+total(p),0);
+  const low=products.filter(p=>{const t=total(p);return t>0 && t<p.min_stock*1.5;}).length;
+  const out=products.filter(p=>total(p)===0).length;
   $('kpi-grid').innerHTML=`
-    <div class="kpi"><div class="k-label"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="m7.5 4.27 9 5.15M21 8 12 13 3 8M12 13v9"/></svg>Referencias activas</div><div class="k-value">${total}</div><div class="k-delta">en catálogo</div></div>
-    <div class="kpi"><div class="k-label"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Valor de inventario</div><div class="k-value">${value.toLocaleString('es-ES',{maximumFractionDigits:0})}<small> €</small></div><div class="k-delta">stock × precio</div></div>
+    <div class="kpi"><div class="k-label"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="m12 2 9 4.9V17L12 22 3 17V6.9L12 2zM3.3 7l8.7 5 8.7-5M12 22V12"/></svg>Referencias</div><div class="k-value">${refs}</div><div class="k-delta">en catálogo</div></div>
+    <div class="kpi"><div class="k-label"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Unidades en stock</div><div class="k-value">${units.toLocaleString('es-ES')}</div><div class="k-delta">en 3 ubicaciones</div></div>
     <div class="kpi warn"><div class="k-label"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.7 18-9-15.5a1 1 0 0 0-1.7 0l-9 15.5a1 1 0 0 0 .9 1.5h17.6a1 1 0 0 0 .9-1.5Z"/><path d="M12 9v4M12 17h.01"/></svg>Stock bajo</div><div class="k-value">${low}</div><div class="k-delta">requieren atención</div></div>
     <div class="kpi crit"><div class="k-label"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>Agotados</div><div class="k-value">${out}</div><div class="k-delta">sin existencias</div></div>`;
 
-  const alerts=products.filter(p=>p.stock<p.min_stock*1.5).sort((a,b)=>(a.stock/Math.max(a.min_stock,1))-(b.stock/Math.max(b.min_stock,1)));
-  $('alerts-list').innerHTML = alerts.length? alerts.map(p=>{const s=statusOf(p);return `<div class="alert-row">
-    <div class="prod-thumb">${emojiFor(p.category)}</div>
-    <div class="ar-info"><div class="ar-name">${esc(p.name)}</div><div class="ar-sku">${esc(p.sku||'—')}</div></div>
-    ${gaugeHTML(p)}<span class="pill ${s.cls}">${s.label}</span></div>`}).join('')
+  const alerts=products.filter(p=>total(p)<p.min_stock*1.5).sort((a,b)=>(total(a)/Math.max(a.min_stock,1))-(total(b)/Math.max(b.min_stock,1)));
+  $('alerts-list').innerHTML = alerts.length? alerts.map(p=>{const t=total(p),s=statusOf(t,p.min_stock);
+    const where=Object.keys(LOCATIONS).filter(l=>qtyAt(p,l)>0).map(l=>LOCATIONS[l].label).join(', ')||'sin stock';
+    return `<div class="alert-row"><div class="prod-thumb">${emojiFor(p.category)}</div>
+      <div class="ar-info"><div class="ar-name">${esc(p.name)}</div><div class="ar-sku">${t} ud. · ${esc(where)}</div></div>
+      <span class="pill ${s.cls}">${s.label}</span></div>`}).join('')
     : `<div class="empty"><h4>Todo en orden</h4><p>Ningún producto por debajo del mínimo.</p></div>`;
 
   $('recent-moves').innerHTML = movements.length? movements.slice(0,6).map(m=>moveFeedHTML(m)).join('')
     : `<div class="empty"><p>Aún no hay movimientos registrados.</p></div>`;
 }
 function moveFeedHTML(m){
-  const ico = m.type==='in'
-    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  const ico = m.type==='in'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  const loc=(LOCATIONS[m.location]||{label:m.location}).label;
   return `<div class="move"><div class="move-ico ${m.type}">${ico}</div>
-    <div class="move-info"><div class="t">${esc(m.products?.name||'Producto')}</div><div class="s">${esc(m.reason||'—')}</div></div>
-    <div style="text-align:right"><div class="move-qty ${m.type}">${m.type==='in'?'+':'−'}${m.quantity}</div><div class="s" style="color:var(--faint)">${timeAgo(m.created_at)}</div></div></div>`;
+    <div class="move-info"><div class="t">${esc(m.products?.name||'Producto')}</div><div class="s">${esc(loc)} · ${esc(m.reason||'—')}</div></div>
+    <div><div class="move-qty ${m.type}">${m.type==='in'?'+':'−'}${m.quantity}</div><div class="s" style="color:var(--faint);text-align:right">${timeAgo(m.created_at)}</div></div></div>`;
 }
 
-// ---------- PRODUCTOS ----------
-function buildCatChips(){
-  const counts={}; products.forEach(p=>counts[p.category]=(counts[p.category]||0)+1);
-  let html=`<button class="chip ${catFilter==='all'?'on':''}" onclick="setCat('all',this)">Todos · ${products.length}</button>`;
-  Object.keys(CATS).forEach(c=>{ if(counts[c]) html+=`<button class="chip ${catFilter===c?'on':''}" onclick="setCat('${c}',this)">${CATS[c].label} · ${counts[c]}</button>`; });
-  $('cat-chips').innerHTML=html;
+// ---------- PRODUCTOS / BUSCADOR ----------
+function buildLocChips(){
+  const counts={}; products.forEach(p=>Object.keys(LOCATIONS).forEach(l=>{ if(qtyAt(p,l)>0) counts[l]=(counts[l]||0)+1; }));
+  let html=`<button class="chip ${locFilter==='all'?'on':''}" onclick="setLoc('all',this)">Todas · ${products.length}</button>`;
+  Object.keys(LOCATIONS).forEach(l=>{ html+=`<button class="chip ${locFilter===l?'on':''}" onclick="setLoc('${l}',this)">${LOCATIONS[l].label} · ${counts[l]||0}</button>`; });
+  $('loc-chips').innerHTML=html;
 }
-function setCat(c,el){ catFilter=c; document.querySelectorAll('#cat-chips .chip').forEach(x=>x.classList.remove('on')); el.classList.add('on'); renderProducts(); }
+function setLoc(l,el){ locFilter=l; document.querySelectorAll('#loc-chips .chip').forEach(x=>x.classList.remove('on')); el.classList.add('on'); renderProducts(); }
 function renderProducts(){
-  buildCatChips();
-  let list=products.filter(p=>catFilter==='all'||p.category===catFilter);
+  buildLocChips();
+  let list=products.slice();
+  if(locFilter!=='all') list=list.filter(p=>qtyAt(p,locFilter)>0);
   if(searchTerm) list=list.filter(p=>(p.name+' '+(p.sku||'')+' '+(p.barcode||'')).toLowerCase().includes(searchTerm));
   const w=canWrite();
-  $('prod-rows').innerHTML = list.length? list.map(p=>{const s=statusOf(p);return `<tr>
-    <td><div class="prod-cell"><div class="prod-thumb">${emojiFor(p.category)}</div><div><div class="prod-name">${esc(p.name)}</div><div class="prod-cat">${(CATS[p.category]||CATS.otros).label}</div></div></div></td>
-    <td><span class="mono">${esc(p.sku||'—')}</span></td>
-    <td>${gaugeHTML(p)}</td>
-    <td><span class="pill ${s.cls}">${s.label}</span></td>
-    <td style="text-align:right"><span class="mono" style="color:var(--text)">${(p.price||0).toFixed(2)} €</span></td>
-    <td><div class="row-actions">${w?`
-      <button class="icon-btn" title="Movimiento" onclick="openMove('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg></button>
-      <button class="icon-btn" title="Editar" onclick="openProduct('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
-      <button class="icon-btn del" title="Eliminar" onclick="delProduct('${p.id}','${esc(p.name)}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>`:''}
-    </div></td></tr>`}).join('')
-    : `<tr><td colspan="6"><div class="empty"><h4>Sin productos</h4><p>${searchTerm?'Nada coincide con la búsqueda.':(w?'Pulsa “Nuevo producto” para empezar.':'No hay productos todavía.')}</p></div></td></tr>`;
+  $('prod-cards').innerHTML = list.length? list.map(p=>{
+    const t=total(p), s=statusOf(t,p.min_stock);
+    const badges=Object.keys(LOCATIONS).map(l=>{const q=qtyAt(p,l);return `<span class="locb${q===0?' zero':''}${locFilter===l?' hi':''}"><i>${LOCATIONS[l].label}</i><b>${q}</b></span>`}).join('');
+    return `<div class="pcard">
+      <div class="pcard-top"><div class="prod-thumb">${emojiFor(p.category)}</div>
+        <div class="pcard-id"><div class="prod-name">${esc(p.name)}</div><div class="ar-sku">${esc(p.sku||'—')} · ${(CATS[p.category]||CATS.otros).label}</div></div>
+        <span class="pill ${s.cls}">${s.label}</span></div>
+      <div class="pcard-total"><span class="big-num">${t}</span><span class="unit">ud. totales</span><span class="mininfo">mín ${p.min_stock}</span></div>
+      ${gaugeBar(t,p.min_stock)}
+      <div class="loc-badges">${badges}</div>
+      ${w?`<div class="pcard-actions">
+        <button class="btn btn-ghost" onclick="openMove('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>Movimiento</button>
+        <button class="icon-btn" onclick="openProduct('${p.id}')" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+        <button class="icon-btn del" onclick="delProduct('${p.id}','${esc(p.name).replace(/'/g,"\\'")}')" title="Eliminar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+      </div>`:''}
+    </div>`}).join('')
+    : `<div class="empty" style="grid-column:1/-1"><h4>Sin resultados</h4><p>${searchTerm?'Nada coincide con la búsqueda.':(w?'Pulsa “Nuevo producto” para empezar.':'No hay productos.')}</p></div>`;
 }
 
 // ---------- MOVIMIENTOS ----------
 function setMoveFilter(f,el){ moveFilter=f; document.querySelectorAll('#move-chips .chip').forEach(x=>x.classList.remove('on')); el.classList.add('on'); renderMovements(); }
 function renderMovements(){
   let list=movements.filter(m=>moveFilter==='all'||m.type===moveFilter);
-  const ico=t=>t==='in'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
   const uname=id=>{const u=profiles.find(p=>p.id===id);return u?(u.full_name||'—'):'—';};
-  $('move-rows').innerHTML = list.length? list.map(m=>`<tr>
-    <td><div class="move-ico ${m.type}" style="width:30px;height:30px;display:inline-grid">${ico(m.type)}</div></td>
-    <td style="font-weight:600">${esc(m.products?.name||'Producto')}</td>
-    <td><span class="move-qty ${m.type}">${m.type==='in'?'+':'−'}${m.quantity} ud.</span></td>
-    <td style="color:var(--muted)">${esc(m.reason||'—')}</td>
-    <td>${esc(uname(m.user_id))}</td>
-    <td style="text-align:right;color:var(--faint)" class="mono">${fmtDate(m.created_at)}</td></tr>`).join('')
-    : `<tr><td colspan="6"><div class="empty"><p>No hay movimientos en este filtro.</p></div></td></tr>`;
+  $('move-list').innerHTML = list.length? list.map(m=>{
+    const ico=m.type==='in'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    const loc=(LOCATIONS[m.location]||{label:m.location}).label;
+    return `<div class="move"><div class="move-ico ${m.type}">${ico}</div>
+      <div class="move-info"><div class="t">${esc(m.products?.name||'Producto')}</div><div class="s">${esc(loc)} · ${esc(m.reason||'—')} · ${esc(uname(m.user_id))}</div></div>
+      <div><div class="move-qty ${m.type}">${m.type==='in'?'+':'−'}${m.quantity}</div><div class="s" style="color:var(--faint);text-align:right">${fmtDate(m.created_at)}</div></div></div>`;
+  }).join('') : `<div class="empty"><p>No hay movimientos en este filtro.</p></div>`;
 }
 
 // ---------- USUARIOS ----------
@@ -696,44 +684,43 @@ function renderUsers(){
     <div class="top"><div class="avatar" style="background:linear-gradient(135deg,${colr[u.role]||colr.read})">${initials(u.full_name||'?')}</div>
     <div><div class="uname">${esc(u.full_name||'Sin nombre')}</div></div></div>
     <span class="role-tag ${cls[u.role]||'role-read'}">${roleLabel(u.role)}</span>
-    <div class="user-meta"><span>Últ. acceso: ${u.last_seen?timeAgo(u.last_seen):'—'}</span></div></div>`).join('')
-    || `<div class="empty"><p>Sin usuarios.</p></div>`;
+    <div class="user-meta"><span>Últ. acceso: ${u.last_seen?timeAgo(u.last_seen):'—'}</span></div></div>`).join('') || `<div class="empty"><p>Sin usuarios.</p></div>`;
 }
 
 // ---------- MODAL PRODUCTO ----------
-function fillCategorySelect(){
-  $('p-category').innerHTML=Object.keys(CATS).map(c=>`<option value="${c}">${CATS[c].label}</option>`).join('');
+function fillProductForm(){
+  $('p-category').innerHTML=Object.keys(CATS).map(c=>`<option value="${c}">${CATS[c].emoji} ${CATS[c].label}</option>`).join('');
+  $('p-locqty').innerHTML=Object.keys(LOCATIONS).map(l=>`<div class="field"><label>${LOCATIONS[l].label}</label><input id="pq-${l}" type="number" min="0" value="0"></div>`).join('');
 }
 function openProduct(id){
   if(!canWrite()) return toast('No tienes permisos de edición.','err');
   editingId=id||null;
-  const p = id? products.find(x=>x.id===id) : {name:'',sku:'',barcode:'',category:'consumibles',supplier:'',stock:0,min_stock:0,price:0,location:''};
+  const p = id? products.find(x=>x.id===id) : {name:'',sku:'',barcode:'',category:'consumibles',supplier:'',min_stock:0};
   $('pm-title').textContent = id?'Editar producto':'Nuevo producto';
   $('p-name').value=p.name||''; $('p-sku').value=p.sku||''; $('p-barcode').value=p.barcode||'';
-  $('p-category').value=p.category||'consumibles'; $('p-supplier').value=p.supplier||'';
-  $('p-stock').value=p.stock||0; $('p-min').value=p.min_stock||0; $('p-price').value=p.price||0; $('p-location').value=p.location||'';
+  $('p-category').value=p.category||'consumibles'; $('p-supplier').value=p.supplier||''; $('p-min').value=p.min_stock||0;
+  Object.keys(LOCATIONS).forEach(l=>{ $('pq-'+l).value = id? qtyAt(p,l) : 0; });
   $('product-modal').classList.add('on');
 }
 async function saveProduct(){
   const name=$('p-name').value.trim();
   if(!name) return toast('El nombre es obligatorio.','err');
-  const payload={
-    name, sku:$('p-sku').value.trim()||null, barcode:$('p-barcode').value.trim()||null,
-    category:$('p-category').value, supplier:$('p-supplier').value.trim()||null,
-    stock:parseInt($('p-stock').value)||0, min_stock:parseInt($('p-min').value)||0,
-    price:parseFloat($('p-price').value)||0, location:$('p-location').value.trim()||null
-  };
+  const catalog={ name, sku:$('p-sku').value.trim()||null, barcode:$('p-barcode').value.trim()||null,
+    category:$('p-category').value, supplier:$('p-supplier').value.trim()||null, min_stock:parseInt($('p-min').value)||0 };
   $('pm-save').disabled=true;
-  const res = editingId
-    ? await sb.from('products').update(payload).eq('id',editingId)
-    : await sb.from('products').insert(payload);
-  $('pm-save').disabled=false;
-  if(res.error) return toast(res.error.message,'err');
-  closeModal('product-modal'); toast(editingId?'Producto actualizado.':'Producto creado.','ok'); await refreshData();
+  try{
+    let prodId=editingId;
+    if(editingId){ const{error}=await sb.from('products').update(catalog).eq('id',editingId); if(error) throw error; }
+    else { const{data,error}=await sb.from('products').insert(catalog).select().single(); if(error) throw error; prodId=data.id; }
+    const rows=Object.keys(LOCATIONS).map(l=>({ product_id:prodId, location:l, quantity:parseInt($('pq-'+l).value)||0 }));
+    const{error:se}=await sb.from('stock').upsert(rows,{onConflict:'product_id,location'}); if(se) throw se;
+    closeModal('product-modal'); toast(editingId?'Producto actualizado.':'Producto creado.','ok'); await refreshData();
+  }catch(e){ toast(e.message||'Error al guardar.','err'); }
+  finally{ $('pm-save').disabled=false; }
 }
 async function delProduct(id,name){
   if(!canWrite()) return toast('No tienes permisos.','err');
-  if(!confirm(`¿Eliminar “${name}”? Se borrará también su historial de movimientos.`)) return;
+  if(!confirm(`¿Eliminar “${name}”? Se borrará su stock e historial en todas las ubicaciones.`)) return;
   const { error } = await sb.from('products').delete().eq('id',id);
   if(error) return toast(error.message,'err');
   toast('Producto eliminado.','ok'); await refreshData();
@@ -743,21 +730,25 @@ async function delProduct(id,name){
 function openMove(productId){
   if(!canWrite()) return toast('No tienes permisos para registrar movimientos.','err');
   moveType='in'; setMoveType('in');
-  $('m-product').innerHTML=products.map(p=>`<option value="${p.id}">${esc(p.name)} (${p.stock} ud.)</option>`).join('');
+  $('m-product').innerHTML=products.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  $('m-location').innerHTML=Object.keys(LOCATIONS).map(l=>`<option value="${l}">${LOCATIONS[l].label}</option>`).join('');
   if(productId) $('m-product').value=productId;
   $('m-qty').value=1; $('m-reason').value='';
+  updateMoveHint();
   $('move-modal').classList.add('on');
 }
-function setMoveType(t){
-  moveType=t;
-  document.querySelectorAll('#m-seg button').forEach(b=>{b.classList.remove('on-in','on-out'); if(b.dataset.t===t) b.classList.add(t==='in'?'on-in':'on-out');});
+function setMoveType(t){ moveType=t; document.querySelectorAll('#m-seg button').forEach(b=>{b.classList.remove('on-in','on-out'); if(b.dataset.t===t) b.classList.add(t==='in'?'on-in':'on-out');}); updateMoveHint(); }
+function updateMoveHint(){
+  const p=products.find(x=>x.id===$('m-product').value); if(!p){ $('m-hint').textContent=''; return; }
+  const loc=$('m-location').value; const q=qtyAt(p,loc);
+  $('m-hint').textContent=`Stock actual en ${LOCATIONS[loc].label}: ${q} ud.`;
 }
 async function saveMovement(){
-  const product_id=$('m-product').value, qty=parseInt($('m-qty').value);
+  const product_id=$('m-product').value, location=$('m-location').value, qty=parseInt($('m-qty').value);
   if(!product_id) return toast('Selecciona un producto.','err');
   if(!qty||qty<1) return toast('La cantidad debe ser mayor que 0.','err');
   $('mm-save').disabled=true;
-  const { error } = await sb.rpc('register_movement',{ p_product_id:product_id, p_type:moveType, p_quantity:qty, p_reason:$('m-reason').value.trim()||null });
+  const { error } = await sb.rpc('register_movement',{ p_product_id:product_id, p_location:location, p_type:moveType, p_quantity:qty, p_reason:$('m-reason').value.trim()||null });
   $('mm-save').disabled=false;
   if(error) return toast(error.message,'err');
   closeModal('move-modal'); toast(moveType==='in'?'Entrada registrada.':'Salida registrada.','ok'); await refreshData();
@@ -773,38 +764,30 @@ async function toggleScanner(){
     await scanner.start({facingMode:'environment'},{fps:10,qrbox:{width:240,height:160}}, onScan);
     scanning=true; $('scan-hint').textContent='Buscando código…';
   }catch(e){
-    toast('No se pudo acceder a la cámara. Revisa los permisos del navegador.','err');
-    $('scan-viewport').style.display='block'; $('reader').style.display='none';
-    $('scan-toggle').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Activar cámara';
+    toast('No se pudo acceder a la cámara. Revisa los permisos.','err'); resetScanBtn();
   }
 }
-async function stopScanner(){
-  if(scanner){ try{ await scanner.stop(); scanner.clear(); }catch(e){} }
-  scanning=false; $('reader').style.display='none'; $('scan-viewport').style.display='block';
-  $('scan-hint').textContent='Apunta al código de barras o QR del producto';
-  $('scan-toggle').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Activar cámara';
-}
+async function stopScanner(){ if(scanner){ try{ await scanner.stop(); scanner.clear(); }catch(e){} } scanning=false; resetScanBtn(); $('scan-hint').textContent='Apunta al código de barras o QR del producto'; }
+function resetScanBtn(){ $('scan-viewport').style.display='block'; $('reader').style.display='none';
+  $('scan-toggle').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Activar cámara'; }
 function onScan(code){
   $('scan-code').textContent=code;
   const p=products.find(x=>x.barcode===code||x.sku===code);
-  if(!p){
-    $('scan-result').innerHTML=`<div class="empty"><h4>No encontrado</h4><p>Ningún producto con el código <span class="mono">${esc(code)}</span>.</p>${canWrite()?'<button class="btn btn-teal" style="margin-top:14px" onclick="openProduct(null)">Crear producto</button>':''}</div>`;
-    return;
-  }
+  if(!p){ $('scan-result').innerHTML=`<div class="empty"><h4>No encontrado</h4><p>Ningún producto con el código <span class="mono">${esc(code)}</span>.</p>${canWrite()?'<button class="btn btn-teal" style="margin-top:14px" onclick="openProduct(null)">Crear producto</button>':''}</div>`; return; }
   if(navigator.vibrate) navigator.vibrate(60);
-  const s=statusOf(p);
-  $('scan-result').innerHTML=`<div class="alert-row" style="border:none">
-    <div class="prod-thumb">${emojiFor(p.category)}</div>
-    <div class="ar-info"><div class="ar-name">${esc(p.name)}</div><div class="ar-sku">${esc(p.sku||'—')}</div></div>
+  const t=total(p), s=statusOf(t,p.min_stock);
+  const badges=Object.keys(LOCATIONS).map(l=>{const q=qtyAt(p,l);return `<span class="locb${q===0?' zero':''}"><i>${LOCATIONS[l].label}</i><b>${q}</b></span>`}).join('');
+  $('scan-result').innerHTML=`<div class="pcard" style="border:none;padding:0">
+    <div class="pcard-top"><div class="prod-thumb">${emojiFor(p.category)}</div>
+    <div class="pcard-id"><div class="prod-name">${esc(p.name)}</div><div class="ar-sku">${esc(p.sku||'—')}</div></div>
     <span class="pill ${s.cls}">${s.label}</span></div>
-    ${gaugeHTML(p)}
-    ${canWrite()?`<div style="display:flex;gap:10px;margin-top:18px">
-      <button class="btn btn-ghost" style="flex:1" onclick="openMove('${p.id}')">Registrar movimiento</button>
-      <button class="btn btn-teal" style="flex:1" onclick="openProduct('${p.id}')">Editar</button></div>`:''}`;
+    <div class="pcard-total"><span class="big-num">${t}</span><span class="unit">ud. totales</span><span class="mininfo">mín ${p.min_stock}</span></div>
+    <div class="loc-badges">${badges}</div>
+    ${canWrite()?`<div class="pcard-actions"><button class="btn btn-teal" style="flex:1" onclick="openMove('${p.id}')">Registrar movimiento</button></div>`:''}</div>`;
 }
 
-// ---------- NAV / UI ----------
-const titles={panel:'Panel',productos:'Productos',movimientos:'Movimientos',escaner:'Escáner',usuarios:'Usuarios'};
+// ---------- NAV ----------
+const titles={panel:'Panel',productos:'Buscar productos',movimientos:'Movimientos',escaner:'Escáner',usuarios:'Usuarios'};
 function go(view,el){
   if(curView==='escaner' && view!=='escaner') stopScanner();
   curView=view;
@@ -813,19 +796,16 @@ function go(view,el){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   el.classList.add('active');
   $('page-title').textContent=titles[view];
-  $('search').style.display = (view==='productos')?'flex':'none';
-  const w=canWrite();
-  const btn=$('primary-action');
+  $('topsearch').style.display = (view==='productos')?'flex':'none';
+  const w=canWrite(), btn=$('primary-action');
   if(view==='productos'||view==='panel'){ btn.style.display=w?'inline-flex':'none'; btn.querySelector('span').textContent='Nuevo producto'; }
-  else if(view==='movimientos'){ btn.style.display=w?'inline-flex':'none'; btn.querySelector('span').textContent='Registrar movimiento'; }
+  else if(view==='movimientos'){ btn.style.display=w?'inline-flex':'none'; btn.querySelector('span').textContent='Registrar'; }
   else btn.style.display='none';
 }
-function primaryAction(){
-  if(curView==='movimientos') openMove(null); else openProduct(null);
-}
+function primaryAction(){ if(curView==='movimientos') openMove(null); else openProduct(null); }
 function onSearch(v){ searchTerm=v.toLowerCase().trim(); renderProducts(); }
 function updateBadge(){
-  const n=products.filter(p=>p.stock>0 && p.stock<p.min_stock*1.5).length + products.filter(p=>p.stock===0).length;
+  const n=products.filter(p=>total(p)<p.min_stock*1.5).length;
   const b=$('nav-badge'); if(n>0){ b.textContent=n; b.classList.add('show'); } else b.classList.remove('show');
 }
 function closeModal(id){ $(id).classList.remove('on'); }
@@ -834,6 +814,7 @@ function closeModal(id){ $(id).classList.remove('on'); }
 function subscribeRealtime(){
   sb.channel('inv-changes')
     .on('postgres_changes',{event:'*',schema:'public',table:'products'},()=>refreshData())
+    .on('postgres_changes',{event:'*',schema:'public',table:'stock'},()=>refreshData())
     .on('postgres_changes',{event:'*',schema:'public',table:'movements'},()=>refreshData())
     .subscribe();
 }
